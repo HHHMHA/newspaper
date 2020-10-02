@@ -30,12 +30,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 3rd party
+    'crispy_forms',
 
     # Custom
     'users.apps.UsersConfig',
@@ -44,6 +48,9 @@ INSTALLED_APPS = [
 
 # Custom User Model
 AUTH_USER_MODEL = 'users.CustomUser'
+
+# Bootstrap settings for Crispy Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

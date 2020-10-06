@@ -3,12 +3,17 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-{% if user.is_authenticated %}
-    Hi {{ user.name }}
-    <p><a href="{% url 'logout' %}">Log Out</a></p>
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a>
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+        <div class="jumbotron">
+            <h1 class="display-4">Newspaper App</h1>
+            <p class="lead">A Newspaper website built with Django.</p>
+            <hr class="my-2">
+            {% if user.is_authenticated %}
+                <p class="lead">Welcome {{ user.username }}</p>
+            {% else %}
+                <p class="lead">
+                    Your are not logged in:
+                    <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+                </p>
+            {% endif %}
+        </div>
 {% endblock content %}

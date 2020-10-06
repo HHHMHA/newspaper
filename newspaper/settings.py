@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Custom
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
+    'articles.apps.ArticlesConfig',
 ]
 
 # Custom User Model
@@ -131,3 +132,5 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

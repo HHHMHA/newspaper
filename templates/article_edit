@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Articles{% endblock title %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-info">Edit</button>
+    </form>
+{% endblock content %}

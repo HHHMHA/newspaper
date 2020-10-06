@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Articles{% endblock title %}
+
+{% block content %}
+    <div class="card mt-3">
+        <div class="card-header">
+            <span class="font-weight-bold">{{ article.title }}</span> &middot;
+            <span class="text-muted"> by {{ article.author }} |
+            {{ article.date }}</span>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">Contents</h4>
+            <textarea readonly class="form-control card-text" style="resize: none;">{{ article.body }}</textarea>
+        </div>
+        <div class="card-footer text-center text-muted">
+            <p><a class="btn btn-outline-info" href="{% url 'article_edit' article.pk %}">Edit</a> |
+            <a class="btn btn-outline-danger" href="{% url 'article_delete' article.pk %}">Delete</a></p>
+            <p>Back to <a class="btn btn-outline-secondary" href="{% url 'article_list' %}">All Articles.</a></p>
+        </div>
+    </div>
+
+{% endblock content %}

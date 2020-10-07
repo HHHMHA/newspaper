@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
 
-from .models import Article
+from .models import Article, Comment
 
 
 class ArticleListView(ListView):
@@ -49,4 +49,16 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ()
+    login_url = 'login'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.article = Article.objects.get(pk=self.request.POST.get('article'))
+        form.instance.comment = self.request.POST.get('comment')
         return super().form_valid(form)

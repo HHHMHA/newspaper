@@ -25,5 +25,13 @@
             {% endfor %}
         </div>
     </div>
-
+    <form action="{% url 'comment_create' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <p class="form-text">Add a comment</p>
+            <input hidden name="article" type="number" value="{{ article.pk }}">
+            <textarea class="form-control" name="comment" rows="5"></textarea>
+            <div class="text-right"><button type="submit" class="btn btn-success mb-3 mt-3 ml-auto">Comment</button></div>
+        </div>
+    </form>
 {% endblock content %}

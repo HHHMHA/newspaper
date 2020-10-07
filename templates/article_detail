@@ -11,12 +11,18 @@
         </div>
         <div class="card-body">
             <h4 class="card-title">Contents</h4>
-            <textarea readonly class="form-control card-text" style="resize: none;">{{ article.body }}</textarea>
+            <textarea readonly rows="{{ article.get_display_rows_count }}" class="form-control card-text mb-3" style="resize: none;">{{ article.body }}</textarea>
+            <div class="text-center">
+                <p><a class="btn btn-outline-info" href="{% url 'article_edit' article.pk %}">Edit</a> |
+                <a class="btn btn-outline-danger" href="{% url 'article_delete' article.pk %}">Delete</a></p>
+                <a class="btn btn-outline-secondary" href="{% url 'article_list' %}">All Articles.</a>
+            </div>
         </div>
-        <div class="card-footer text-center text-muted">
-            <p><a class="btn btn-outline-info" href="{% url 'article_edit' article.pk %}">Edit</a> |
-            <a class="btn btn-outline-danger" href="{% url 'article_delete' article.pk %}">Delete</a></p>
-            <p>Back to <a class="btn btn-outline-secondary" href="{% url 'article_list' %}">All Articles.</a></p>
+        <div class="card-footer text-muted">
+            {% for comment in article.comments.all %}
+                <span class="font-weight-bold">{{ comment.author }}</span>
+                <textarea readonly rows="1" class="form-control card-text" style="resize: none;">{{ comment.comment }}</textarea>
+            {% endfor %}
         </div>
     </div>
 

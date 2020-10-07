@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 
 # Create your views here.
@@ -20,19 +21,32 @@ class ArticleDetailView(DetailView):
     template_name = 'article_detail'
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Article
     fields = ('title', 'body',)
     template_name = 'article_edit'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.get_object().is_author(self.request.user)
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Article
     success_url = reverse_lazy('article_list')
     template_name = 'article_delete'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.get_object().is_author(self.request.user)
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     template_name = 'article_create'
-    fields = ('title', 'body', 'author', )
+    fields = ('title', 'body', )
+    login_url = 'login'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)

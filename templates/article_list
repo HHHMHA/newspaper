@@ -8,11 +8,12 @@
             <div class="card-header">
                 <span class="font-weight-bold"><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></span> &middot;
                 <span class="text-muted"> by {{ article.author }} |
-                    {{ article.date }}</span>
+                    {{ article.date }} |
+                    {{ article.comments.count }} comments</span>
             </div>
             <div class="card-body">
                 <h4 class="card-title">Contents</h4>
-                <textarea readonly class="form-control card-text" style="resize: none;">{{ article.body }}</textarea>
+                <textarea readonly rows="{{ article.get_display_rows_count }}" class="form-control card-text" style="resize: none;">{{ article.body }}</textarea>
             </div>
             <div class="card-footer text-center text-muted">
             <p><a class="btn btn-outline-info" href="{% url 'article_edit' article.pk %}">Edit</a> |

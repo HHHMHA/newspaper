@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
 
+from .mixins import UserIsArticleAuthor
 from .models import Article, Comment
 
 
@@ -21,24 +22,18 @@ class ArticleDetailView(DetailView):
     template_name = 'article_detail'
 
 
-class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, UserIsArticleAuthor, UpdateView):
     model = Article
     fields = ('title', 'body',)
     template_name = 'article_edit'
     login_url = 'login'
 
-    def test_func(self):
-        return self.get_object().is_author(self.request.user)
 
-
-class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, UserIsArticleAuthor, DeleteView):
     model = Article
     success_url = reverse_lazy('article_list')
     template_name = 'article_delete'
     login_url = 'login'
-
-    def test_func(self):
-        return self.get_object().is_author(self.request.user)
 
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
@@ -48,6 +43,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
     login_url = 'login'
 
     def form_valid(self, form):
+        """Attach the user who submitted the request as the article creator and save the form."""
         form.instance.author = self.request.user
         return super().form_valid(form)
 
@@ -58,6 +54,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     login_url = 'login'
 
     def form_valid(self, form):
+        """Create comment object from the form data and set the current user as the author"""
         form.instance.author = self.request.user
         form.instance.article = Article.objects.get(pk=self.request.POST.get('article'))
         form.instance.comment = self.request.POST.get('comment')

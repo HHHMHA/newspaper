@@ -19,6 +19,12 @@ class Article(models.Model):
         to=get_user_model(),
         on_delete=models.CASCADE
     )
+    likes = models.ManyToManyField(
+        to=get_user_model(),
+        related_name='liked_articles',
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return self.title
@@ -26,9 +32,12 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse('article_detail', args=[str(self.pk)])
 
-    def get_display_rows_count(self):
+    def get_display_rows_count(self) -> int:
         """:return: A Limit for how many rows to display without scrolling for the article"""
         return min(MAX_ROWS_FOR_ARTICLE, len(self.body.split('\n')))
+
+    def is_liked_by(self, user: CustomUser) -> bool:
+        return self.likes.all().filter(pk=user.pk).exists()
 
 
 class Comment(models.Model):
@@ -46,14 +55,14 @@ class Comment(models.Model):
     def __str__(self):
         return self.limited_comment()
 
-    def limited_comment(self):
+    def limited_comment(self) -> str:
         """
         Comment with limited length
         if the COMMENT_MAX_PEEK_LENGTH is exceeded the comment get cropped and 4 dots are appended to the comment
         """
         return self.comment[:COMMENT_MAX_PEEK_LENGTH] + self.tail()
 
-    def tail(self):
+    def tail(self) -> str:
         """:return 4 dots if the comment length exceeds the COMMENT_MAX_PEEK_LENGTH"""
         return "...." if len(self.comment) > COMMENT_MAX_PEEK_LENGTH else ""
 

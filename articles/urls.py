@@ -7,6 +7,7 @@ from .views import (
     ArticleDetailView,
     ArticleCreateView,
     CommentCreateView,
+    ArticleVoteView,
 )
 
 urlpatterns = [
@@ -16,4 +17,5 @@ urlpatterns = [
     path('<int:pk>/edit/', ArticleUpdateView.as_view(), name='article_edit'),
     path('create/', ArticleCreateView.as_view(), name='article_create'),
     path('comment/create', CommentCreateView.as_view(), name='comment_create'),
+    path('vote/<int:pk>', ArticleVoteView.as_view(), name='vote'),
 ]

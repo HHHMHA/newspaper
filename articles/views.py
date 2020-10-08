@@ -3,6 +3,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
 
@@ -68,6 +70,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ArticleVoteView(LoginRequiredMixin, UpdateView):
     model = Article
     fields = ()

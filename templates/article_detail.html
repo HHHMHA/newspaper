@@ -27,20 +27,25 @@
                     }
 
                     function set_article_liked(liked) {
-                        let vote = 'up';
-                        const like_button = "<button id=\"up_vote\" class=\"fa fa fa-thumbs-up ml-auto btn btn-outline-success\" onclick=\"like_article()\"></button>";
-                        const dislike_button = "<button id=\"down_vote\" class=\"fa fa fa-thumbs-down ml-auto btn btn-outline-danger\" onclick=\"dislike_article()\"></button>";
-                        let new_button = like_button
+                        const like_button = '<button id="vote_btn" class="fa fa fa-thumbs-up ml-auto btn btn-outline-success" onclick="like_article()"></button>'
+                        const dislike_button = '<button id="vote_btn" class="fa fa fa-thumbs-down ml-auto btn btn-outline-danger" onclick="dislike_article()"></button>'
+                        let new_button = dislike_button
 
                         if (liked === false) {
-                            vote = 'down'
-                            new_button = dislike_button
+                            new_button = like_button
                         }
-
-                        $($.post("{% url 'vote' article.id %}", {vote: vote}, function(data, status) {
-                            $('#votes').html($(data).find('#votes').html())
-                            $('#vote_btn').replaceWith(new_button)
-                        }, 'html'));
+                        $.ajaxSetup({async: false});
+                        $($.post(
+                            "{% url 'vote' article.id %}",
+                            {},
+                            function(data, status) {
+                                if (status === 'success') {
+                                    $('#votes').html($(data).find('#votes').html())
+                                    $('#vote_btn').replaceWith(new_button)
+                                }
+                            },
+                            'html',
+                        ));
                     }
                 </script>
                 <span class="ml-2" id="votes">{{ article.likes.count }}</span>
@@ -59,7 +64,7 @@
         <div class="card-footer text-muted">
             {% for comment in article.comments.all %}
                 <span class="font-weight-bold">{{ comment.author }}</span>
-                <textarea readonly rows="1" class="form-control card-text"
+                <textarea readonly rows="{{ comment.get_display_rows_count }}" class="form-control card-text"
                           style="resize: none;">{{ comment.comment }}</textarea>
             {% endfor %}
         </div>

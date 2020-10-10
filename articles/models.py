@@ -8,6 +8,7 @@ from users.models import CustomUser
 
 COMMENT_MAX_PEEK_LENGTH = 50
 MAX_ROWS_FOR_ARTICLE = 5
+MAX_ROWS_FOR_COMMENT = 5
 
 
 # Create your models here.
@@ -55,6 +56,9 @@ class Comment(models.Model):
     def __str__(self):
         return self.limited_comment()
 
+    def get_absolute_url(self):
+        return reverse('article_list')
+
     def limited_comment(self) -> str:
         """
         Comment with limited length
@@ -66,5 +70,6 @@ class Comment(models.Model):
         """:return 4 dots if the comment length exceeds the COMMENT_MAX_PEEK_LENGTH"""
         return "...." if len(self.comment) > COMMENT_MAX_PEEK_LENGTH else ""
 
-    def get_absolute_url(self):
-        return reverse('article_list')
+    def get_display_rows_count(self) -> int:
+        """:return: A Limit for how many rows to display without scrolling for the comment"""
+        return min(MAX_ROWS_FOR_COMMENT, len(self.comment.split('\n')))

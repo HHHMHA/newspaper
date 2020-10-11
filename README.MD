@@ -1,19 +1,19 @@
-#Newspaper Website
-###Simple Django practice project
+# Newspaper Website
+### Simple Django practice project
 
-#1. Requirements
+# 1. Requirements
 All the requirements are listed in [requirements.txt](requirements.txt)
 
 however you can just activate the virtual environment with pipenv shell.
 
-#2. Running the server
+# 2. Running the server
 First apply the migrations:
 `python manage.py migrate`
 
 Then you're good to go
 `python manage.py runserver`
 
-#3. About the project
+# 3. About the project
 The core functionality is about creating, editing, and deleting articles
 Basic User Authentication and Authorization is included
 AJAX is used to like/dislike articles

@@ -21,6 +21,7 @@ toml = "==0.10.1"
 typed-ast = "==1.4.1"
 typing-extensions = "==3.7.4.3"
 django-floppyforms = "*"
+django-braces = "*"
 
 [requires]
 python_version = "3.8"

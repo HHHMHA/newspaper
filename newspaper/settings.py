@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # 3rd party
     'crispy_forms',
     'floppyforms',
+    'braces',
 
     # Custom
     'users.apps.UsersConfig',

@@ -18,6 +18,41 @@
                     <button id="vote_btn" class="fa fa fa-thumbs-up ml-auto btn btn-outline-success" onclick="like_article()"></button>
                 {% endif %}
                 <script>
+                    // This code was taken from https://docs.djangoproject.com/en/1.11/ref/csrf/#ajax to enable csrf token in AJAX
+                    function getCookie(name) {
+                        let cookieValue = null;
+                        if (document.cookie && document.cookie !== '') {
+                            const cookies = document.cookie.split(';');
+                            for (let i = 0; i < cookies.length; i++) {
+                                const cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+
+                    function csrfSafeMethod(method) {
+                        // these HTTP methods do not require CSRF protection
+                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                    }
+
+                    const csrftoken = getCookie('csrftoken');
+
+                    // Removing Async to stop overlapping
+                    // Setting up CSRF header
+                    $.ajaxSetup({
+                        beforeSend: function(xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                            }
+                        },
+                        async: false
+                    });
+
                     function like_article() {
                         set_article_liked(true)
                     }
@@ -34,7 +69,7 @@
                         if (liked === false) {
                             new_button = like_button
                         }
-                        $.ajaxSetup({async: false});
+
                         $($.post(
                             "{% url 'vote' article.id %}",
                             {},

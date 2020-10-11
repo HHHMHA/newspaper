@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e9e328b68ca69aed88696fd2d20104fdef2cd46990d6970a5320cd105c23cee9"
+            "sha256": "beb921939535cfdf1796e6d3bc4ca262f413301e0c5b6237766aee41dd79c3dd"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -62,6 +62,14 @@
             ],
             "index": "pypi",
             "version": "==1.9.2"
+        },
+        "django-floppyforms": {
+            "hashes": [
+                "sha256:5b3f6891463149b83c44d2bd6109ce32de3d848e2ff7dbc02c41c65562ddf633",
+                "sha256:d620f1ed7ae3fc0377803e5ba2df4afb2d4cdda7b13fdf0a71840da0b5e5aae8"
+            ],
+            "index": "pypi",
+            "version": "==1.9.0"
         },
         "mypy-extensions": {
             "hashes": [
